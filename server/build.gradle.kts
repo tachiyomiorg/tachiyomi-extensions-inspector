@@ -29,10 +29,6 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
     implementation("com.squareup.okio:okio:2.10.0")
 
-    // jackson version is tied to javalin, ref: `io.javalin.core.util.OptionalDependency`
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.10.3")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.3")
-
 
     // dependencies of Tachiyomi extensions, some are duplicate, keeping it here for reference
     implementation("com.github.inorichi.injekt:injekt-core:65b0440")
