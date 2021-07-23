@@ -25,21 +25,12 @@ object InspectorMain {
                 val (pkgName, sources) = installAPK(tmpDir) {
                     it
                 }
-                ExtensionJson(
-                    pkgName,
-                    sources.map { source -> SourceJson(source) }
-                )
+                pkgName to sources.map { source -> SourceJson(source) }
             } else null
-        }
+        }.toMap()
 
         File(outputPath).writeText(Json.encodeToString(extensions))
     }
-
-    @Serializable
-    data class ExtensionJson(
-        val pkgName: String,
-        val sources: List<SourceJson>
-    )
 
     @Serializable
     data class SourceJson(
