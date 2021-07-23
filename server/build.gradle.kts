@@ -3,10 +3,10 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.jmailen.gradle.kotlinter.tasks.FormatTask
 import org.jmailen.gradle.kotlinter.tasks.LintTask
 import java.io.BufferedReader
-import java.time.Instant
 
 plugins {
     application
+    kotlin("plugin.serialization")
     id("com.github.johnrengelman.shadow") version "7.0.0"
     id("org.jmailen.kotlinter") version "3.4.3"
     id("de.fuerstenau.buildconfig") version "1.1.8"
@@ -29,24 +29,9 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
     implementation("com.squareup.okio:okio:2.10.0")
 
-    // Javalin api
-    implementation("io.javalin:javalin:3.13.6")
     // jackson version is tied to javalin, ref: `io.javalin.core.util.OptionalDependency`
     implementation("com.fasterxml.jackson.core:jackson-databind:2.10.3")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.10.3")
-
-    // Exposed ORM
-    val exposedVersion = "0.31.1"
-    implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
-    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
-    // current database driver
-    implementation("com.h2database:h2:1.4.200")
-
-    // tray icon
-    implementation("com.dorkbox:SystemTray:4.1")
-    implementation("com.dorkbox:Utilities:1.9")
 
 
     // dependencies of Tachiyomi extensions, some are duplicate, keeping it here for reference
@@ -118,11 +103,6 @@ buildConfig {
     buildConfigField("String", "NAME", rootProject.name)
     buildConfigField("String", "VERSION", tachideskVersion)
     buildConfigField("String", "REVISION", tachideskRevision)
-    buildConfigField("String", "BUILD_TYPE", if (System.getenv("ProductBuildType") == "Stable") "Stable" else "Preview")
-    buildConfigField("long", "BUILD_TIME", Instant.now().epochSecond.toString())
-
-    buildConfigField("String", "GITHUB", "https://github.com/Suwayomi/Tachidesk")
-    buildConfigField("String", "DISCORD", "https://discord.gg/DDZdqZWaHA")
 }
 
 tasks {
@@ -165,16 +145,15 @@ tasks {
         dependsOn("formatKotlin", "lintKotlin")
     }
 
-    named<Copy>("processResources") {
-        duplicatesStrategy = DuplicatesStrategy.INCLUDE
-        mustRunAfter(":webUI:copyBuild")
-    }
-
     withType<LintTask> {
         source(files("src/kotlin"))
     }
 
     withType<FormatTask> {
         source(files("src/kotlin"))
+    }
+
+    withType<ProcessResources> {
+        duplicatesStrategy = DuplicatesStrategy.WARN
     }
 }

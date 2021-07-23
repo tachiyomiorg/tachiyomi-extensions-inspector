@@ -17,12 +17,8 @@ import eu.kanade.tachiyomi.util.lang.Hash
 import mu.KotlinLogging
 import net.dongliu.apk.parser.ApkFile
 import net.dongliu.apk.parser.ApkParsers
-import org.kodein.di.DI
-import org.kodein.di.conf.global
-import org.kodein.di.instance
 import org.w3c.dom.Element
 import org.w3c.dom.Node
-import suwayomi.tachidesk.server.ApplicationDirs
 import xyz.nulldev.androidcompat.pm.InstalledPackage.Companion.toList
 import xyz.nulldev.androidcompat.pm.toPackageInfo
 import java.io.File
@@ -34,7 +30,6 @@ import javax.xml.parsers.DocumentBuilderFactory
 
 object PackageTools {
     private val logger = KotlinLogging.logger {}
-    private val applicationDirs by DI.global.instance<ApplicationDirs>()
 
     const val EXTENSION_FEATURE = "tachiyomi.extension"
     const val METADATA_SOURCE_CLASS = "tachiyomi.extension.class"
@@ -50,12 +45,12 @@ object PackageTools {
     /**
      * Convert dex to jar, a wrapper for the dex2jar library
      */
-    fun dex2jar(dexFile: String, jarFile: String, fileNameWithoutType: String) {
+    fun dex2jar(dexFile: File, jarFile: File) {
         // adopted from com.googlecode.dex2jar.tools.Dex2jarCmd.doCommandLine
         // source at: https://github.com/DexPatcher/dex2jar/tree/v2.1-20190905-lanchon/dex-tools/src/main/java/com/googlecode/dex2jar/tools/Dex2jarCmd.java
 
-        val jarFilePath = File(jarFile).toPath()
-        val reader = MultiDexFileReader.open(Files.readAllBytes(File(dexFile).toPath()))
+        val jarFilePath = jarFile.toPath()
+        val reader = MultiDexFileReader.open(Files.readAllBytes(dexFile.toPath()))
         val handler = BaksmaliBaseDexExceptionHandler()
         Dex2jar
             .from(reader)
@@ -69,7 +64,7 @@ object PackageTools {
             .skipExceptions(false)
             .to(jarFilePath)
         if (handler.hasException()) {
-            val errorFile: Path = File(applicationDirs.extensionsRoot).toPath().resolve("$fileNameWithoutType-error.txt")
+            val errorFile: Path = jarFilePath.parent.resolve("${dexFile.nameWithoutExtension}-error.txt")
             logger.error(
                 """
                 Detail Error Information in File $errorFile

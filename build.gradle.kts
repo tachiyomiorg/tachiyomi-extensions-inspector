@@ -76,9 +76,6 @@ configure(projects) {
         implementation("com.typesafe:config:1.4.1")
         implementation("io.github.config4k:config4k:0.4.2")
 
-        // to get application content root
-        implementation("net.harawata:appdirs:1.2.1")
-
         // dex2jar: https://github.com/DexPatcher/dex2jar/releases/tag/v2.1-20190905-lanchon
         implementation("com.github.DexPatcher.dex2jar:dex-tools:v2.1-20190905-lanchon")
 
