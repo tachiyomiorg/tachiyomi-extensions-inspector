@@ -74,10 +74,10 @@ sourceSets {
 }
 
 // should be bumped with each stable release
-val tachideskVersion = System.getenv("ProductVersion") ?: "v0.4.3"
+val inspectorVersion = "v0.1.0"
 
 // counts commit count on master
-val tachideskRevision = runCatching {
+val inspectorRevision = runCatching {
     System.getenv("ProductRevision") ?: Runtime
         .getRuntime()
         .exec("git rev-list HEAD --count")
@@ -95,10 +95,9 @@ buildConfig {
     clsName = "BuildConfig"
     packageName = "suwayomi.server"
 
-
     buildConfigField("String", "NAME", rootProject.name)
-    buildConfigField("String", "VERSION", tachideskVersion)
-    buildConfigField("String", "REVISION", tachideskRevision)
+    buildConfigField("String", "VERSION", inspectorVersion)
+    buildConfigField("String", "REVISION", inspectorRevision)
 }
 
 tasks {
@@ -108,15 +107,15 @@ tasks {
                     mapOf(
                             "Main-Class" to MainClass,
                             "Implementation-Title" to rootProject.name,
-                            "Implementation-Vendor" to "The Suwayomi Project",
-                            "Specification-Version" to tachideskVersion,
-                            "Implementation-Version" to tachideskRevision
+                            "Implementation-Vendor" to "The Tachiyomi Open Source Project",
+                            "Specification-Version" to inspectorVersion,
+                            "Implementation-Version" to inspectorRevision
                     )
             )
         }
         archiveBaseName.set(rootProject.name)
-        archiveVersion.set(tachideskVersion)
-        archiveClassifier.set(tachideskRevision)
+        archiveVersion.set(inspectorVersion)
+        archiveClassifier.set(inspectorRevision)
     }
     withType<KotlinCompile> {
         kotlinOptions {
