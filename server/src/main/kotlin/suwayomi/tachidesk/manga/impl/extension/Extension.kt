@@ -54,7 +54,7 @@ object Extension {
 
         val className = packageInfo.packageName + packageInfo.applicationInfo.metaData.getString(METADATA_SOURCE_CLASS)
 
-        logger.debug("Main class for extension is $className")
+        logger.trace("Main class for extension is $className")
 
         dex2jar(apkFile, jarFile)
 
