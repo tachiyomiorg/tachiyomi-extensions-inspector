@@ -18,7 +18,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
   build:
-    name: Build artifacts and deploy preview
+    name: Build project
     needs: check_wrapper
     runs-on: ubuntu-latest
 
@@ -30,32 +30,24 @@ jobs:
 
       - name: Checkout master branch
         uses: actions/checkout@v2
-        with:
-          ref: master
-          path: master
-          fetch-depth: 0
 
-      - name: Set up JDK 1.8
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
-          java-version: 1.8
+          java-version: 11
 
       - name: Copy CI gradle.properties
         run: |
-          cd master
           mkdir -p ~/.gradle
           cp .github/runner-files/ci-gradle.properties ~/.gradle/gradle.properties
 
-      - name: Download android.jar
+      - name: Generate android.jar
         run: |
-          cd master
-          curl https://raw.githubusercontent.com/Suwayomi/Tachidesk/android-jar/android.jar -o AndroidCompat/lib/android.jar
+          ./AndroidCompat/getAndroid.sh
 
-      - name: Build and copy webUI, Build Jar
+      - name: Build project
         uses: eskatos/gradle-command-action@v1
         with:
-          build-root-directory: master
-          wrapper-directory: master
           arguments: :server:shadowJar --stacktrace
           wrapper-cache-enabled: true
           dependencies-cache-enabled: true
