@@ -7,9 +7,10 @@ package suwayomi.tachidesk.manga.impl.extension
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import eu.kanade.tachiyomi.source.CatalogueSource
+import eu.kanade.tachiyomi.annotations.Nsfw
 import eu.kanade.tachiyomi.source.Source
 import eu.kanade.tachiyomi.source.SourceFactory
+import eu.kanade.tachiyomi.source.online.HttpSource
 import mu.KotlinLogging
 import suwayomi.tachidesk.manga.impl.util.PackageTools.EXTENSION_FEATURE
 import suwayomi.tachidesk.manga.impl.util.PackageTools.LIB_VERSION_MAX
@@ -23,7 +24,22 @@ import java.io.File
 object Extension {
     private val logger = KotlinLogging.logger {}
 
-    suspend fun installAPK(tmpDir: File, fetcher: suspend () -> File): Pair<String, List<CatalogueSource>> {
+    fun isNsfw(sourceInstance: Any): Boolean {
+        // Annotations are proxied, hence this janky way of checking for them
+        return sourceInstance.javaClass.annotations
+            .flatMap { it.javaClass.interfaces.map { it.simpleName } }
+            .firstOrNull { it == Nsfw::class.java.simpleName } != null
+    }
+
+    data class LoadedSource(
+        val source: HttpSource,
+        val isNsfw: Boolean
+    ) {
+        constructor(source: HttpSource) :
+            this(source, isNsfw(source))
+    }
+
+    suspend fun installAPK(tmpDir: File, fetcher: suspend () -> File): Pair<String, List<LoadedSource>> {
         val apkFile = fetcher()
 
         val jarFile = File(tmpDir, "${apkFile.nameWithoutExtension}.jar")
@@ -60,9 +76,20 @@ object Extension {
 
         // collect sources from the extension
         return packageInfo.packageName to when (val instance = loadExtensionSources(jarFile.absolutePath, className)) {
-            is Source -> listOf(instance)
-            is SourceFactory -> instance.createSources()
+            is Source -> listOf(instance).filterIsInstance<HttpSource>()
+                .map { LoadedSource(it) }
+            is SourceFactory -> {
+                val isNsfw = isNsfw(instance)
+                instance.createSources().filterIsInstance<HttpSource>()
+                    .map {
+                        if (isNsfw) {
+                            LoadedSource(it, true)
+                        } else {
+                            LoadedSource(it)
+                        }
+                    }
+            }
             else -> throw RuntimeException("Unknown source class type! ${instance.javaClass}")
-        }.filterIsInstance<CatalogueSource>()
+        }
     }
 }
