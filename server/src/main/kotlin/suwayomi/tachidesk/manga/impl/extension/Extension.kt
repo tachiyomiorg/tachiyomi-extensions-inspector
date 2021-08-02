@@ -8,7 +8,6 @@ package suwayomi.tachidesk.manga.impl.extension
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import eu.kanade.tachiyomi.annotations.Nsfw
-import eu.kanade.tachiyomi.source.CatalogueSource
 import eu.kanade.tachiyomi.source.Source
 import eu.kanade.tachiyomi.source.SourceFactory
 import eu.kanade.tachiyomi.source.online.HttpSource
@@ -25,9 +24,9 @@ import java.io.File
 object Extension {
     private val logger = KotlinLogging.logger {}
 
-    fun isNsfw(source: CatalogueSource): Boolean {
+    fun isNsfw(sourceInstance: Any): Boolean {
         // Annotations are proxied, hence this janky way of checking for them
-        return source.javaClass.annotations
+        return sourceInstance.javaClass.annotations
             .flatMap { it.javaClass.interfaces.map { it.simpleName } }
             .firstOrNull { it == Nsfw::class.java.simpleName } != null
     }
@@ -77,10 +76,20 @@ object Extension {
 
         // collect sources from the extension
         return packageInfo.packageName to when (val instance = loadExtensionSources(jarFile.absolutePath, className)) {
-            is Source -> listOf(instance)
-            is SourceFactory -> instance.createSources()
+            is Source -> listOf(instance).filterIsInstance<HttpSource>()
+                .map { LoadedSource(it) }
+            is SourceFactory -> {
+                val isNsfw = isNsfw(instance)
+                instance.createSources().filterIsInstance<HttpSource>()
+                    .map {
+                        if (isNsfw) {
+                            LoadedSource(it, true)
+                        } else {
+                            LoadedSource(it)
+                        }
+                    }
+            }
             else -> throw RuntimeException("Unknown source class type! ${instance.javaClass}")
-        }.filterIsInstance<HttpSource>()
-            .map { LoadedSource(it) }
+        }
     }
 }
