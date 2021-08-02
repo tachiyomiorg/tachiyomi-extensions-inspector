@@ -11,10 +11,13 @@ import eu.kanade.tachiyomi.source.CatalogueSource
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import mu.KotlinLogging
 import suwayomi.tachidesk.manga.impl.extension.Extension.installAPK
 import java.io.File
 
 object InspectorMain {
+    private val logger = KotlinLogging.logger {}
+
     suspend fun inspectorMain(args: Array<String>) {
         if (args.size < 3) {
             throw RuntimeException("Inspector must be given the path of apks directory, output json, and a tmp dir")
@@ -27,7 +30,7 @@ object InspectorMain {
         val tmpDir = File(tmpDirPath, "tmp").also { it.mkdir() }
         val extensions = File(apksPath).listFiles().orEmpty().mapNotNull {
             if (it.extension == "apk") {
-                println("Installing ${it.absolutePath}")
+                logger.info("Installing ${it.absolutePath}")
 
                 val (pkgName, sources) = installAPK(tmpDir) {
                     it
