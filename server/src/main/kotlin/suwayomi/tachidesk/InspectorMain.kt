@@ -46,9 +46,9 @@ object InspectorMain {
     data class SourceJson(
         val name: String,
         val lang: String,
-        val id: Long
+        val id: String
     ) {
         constructor(source: CatalogueSource) :
-            this(source.name, source.lang, source.id)
+            this(source.name, source.lang, source.id.toString())
     }
 }
