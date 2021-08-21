@@ -8,7 +8,6 @@ package xyz.nulldev.ts.config
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import ch.qos.logback.classic.Level
-import com.typesafe.config.Config
 import mu.KotlinLogging
 import org.slf4j.Logger
 

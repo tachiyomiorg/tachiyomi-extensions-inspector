@@ -33,7 +33,10 @@ import android.view.Display;
 import android.view.DisplayAdjustments;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.kodein.di.*;
+import org.kodein.di.DI;
+import org.kodein.di.DIAware;
+import org.kodein.di.DIContext;
+import org.kodein.di.DITrigger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import xyz.nulldev.androidcompat.info.ApplicationInfoImpl;
@@ -50,10 +53,9 @@ import java.util.Map;
 /**
  * Custom context implementation.
  *
- * TODO Deal with packagemanager for extension sources
  */
 public class CustomContext extends Context implements DIAware {
-    private DI kodein;
+    private final DI kodein;
     public CustomContext() {
         this(KodeinGlobalHelper.kodein());
     }
@@ -733,5 +735,4 @@ public class CustomContext extends Context implements DIAware {
         return null;
     }
 }
-
 
