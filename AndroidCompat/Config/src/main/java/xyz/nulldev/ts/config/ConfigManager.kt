@@ -12,7 +12,6 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import com.typesafe.config.ConfigRenderOptions
 import mu.KotlinLogging
-import java.io.File
 
 /**
  * Manages app config.
@@ -35,6 +34,7 @@ open class ConfigManager {
     /**
      * Get a config module (Java API)
      */
+    @Suppress("UNCHECKED_CAST")
     fun <T : ConfigModule> module(type: Class<T>): T = loadedModules[type] as T
 
     /**
