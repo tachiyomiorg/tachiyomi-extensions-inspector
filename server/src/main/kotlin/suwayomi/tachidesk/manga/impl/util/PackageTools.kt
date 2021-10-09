@@ -13,7 +13,6 @@ import android.os.Bundle
 import com.googlecode.d2j.dex.Dex2jar
 import com.googlecode.d2j.reader.MultiDexFileReader
 import com.googlecode.dex2jar.tools.BaksmaliBaseDexExceptionHandler
-import eu.kanade.tachiyomi.util.lang.Hash
 import mu.KotlinLogging
 import net.dongliu.apk.parser.ApkFile
 import net.dongliu.apk.parser.ApkParsers
@@ -33,14 +32,8 @@ object PackageTools {
 
     const val EXTENSION_FEATURE = "tachiyomi.extension"
     const val METADATA_SOURCE_CLASS = "tachiyomi.extension.class"
-    const val METADATA_SOURCE_FACTORY = "tachiyomi.extension.factory"
-    const val METADATA_NSFW = "tachiyomi.extension.nsfw"
     const val LIB_VERSION_MIN = 1.2
     const val LIB_VERSION_MAX = 1.2
-
-    private const val officialSignature = "7ce04da7773d41b489f4693a366c36bcd0a11fc39b547168553c285bd7348e23" // inorichi's key
-    private const val unofficialSignature = "64feb21075ba97ebc9cc981243645b331595c111cef1b0d084236a0403b00581" // ArMor's key
-    var trustedSignatures = mutableSetOf<String>() + officialSignature + unofficialSignature
 
     /**
      * Convert dex to jar, a wrapper for the dex2jar library
@@ -117,15 +110,6 @@ object PackageTools {
                 /*+ parsed.apkV2Singers.flatMap { it.certificateMetas }*/
                 ) // Blocked by: https://github.com/hsiafan/apk-parser/issues/72
                 .map { Signature(it.data) }.toTypedArray()
-        }
-    }
-
-    fun getSignatureHash(pkgInfo: PackageInfo): String? {
-        val signatures = pkgInfo.signatures
-        return if (signatures != null && signatures.isNotEmpty()) {
-            Hash.sha256(signatures.first().toByteArray())
-        } else {
-            null
         }
     }
 
