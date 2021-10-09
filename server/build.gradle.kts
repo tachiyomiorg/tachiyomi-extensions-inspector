@@ -12,15 +12,6 @@ plugins {
     id("de.fuerstenau.buildconfig") version "1.1.8"
 }
 
-repositories {
-    maven {
-        url = uri("https://repo1.maven.org/maven2/")
-    }
-    maven {
-        url = uri("https://jitpack.io")
-    }
-}
-
 dependencies {
     // okhttp
     val okhttpVersion = "4.9.1" // version is locked by Tachiyomi extensions
@@ -57,12 +48,6 @@ dependencies {
 val MainClass = "suwayomi.tachidesk.MainKt"
 application {
     mainClass.set(MainClass)
-
-    // for testing electron
-//    applicationDefaultJvmArgs = listOf(
-//            "-Dsuwayomi.tachidesk.webInterface=electron",
-//            "-Dsuwayomi.tachidesk.electronPath=/usr/bin/electron"
-//    )
 }
 
 sourceSets {
@@ -117,6 +102,7 @@ tasks {
         archiveVersion.set(inspectorVersion)
         archiveClassifier.set(inspectorRevision)
     }
+
     withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf(

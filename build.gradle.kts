@@ -14,8 +14,9 @@ allprojects {
         mavenCentral()
         maven("https://maven.google.com/")
         maven("https://jitpack.io")
-        maven("https://oss.sonatype.org/content/repositories/snapshots/")
         maven("https://dl.google.com/dl/android/maven2/")
+        maven("https://repo1.maven.org/maven2/")
+        maven("https://oss.sonatype.org/content/repositories/snapshots/")
     }
 }
 

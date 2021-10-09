@@ -1,19 +1,6 @@
-
 plugins {
     application
     kotlin("plugin.serialization")
-}
-
-
-repositories {
-    mavenCentral()
-    maven {
-        url = uri("https://jitpack.io")
-    }
-
-    maven {
-        url = uri("https://maven.google.com")
-    }
 }
 
 dependencies {
@@ -53,16 +40,3 @@ tasks {
         kotlinOptions.freeCompilerArgs = listOf("-Xopt-in=kotlin.RequiresOptIn")
     }
 }
-
-//def fatJarTask = tasks.getByPath(':AndroidCompat:JVMPatch:fatJar')
-//
-//// Copy JVM core patches
-//task copyJVMPatches(type: Copy) {
-//    from fatJarTask.outputs.files
-//    into 'src/main/resources/patches'
-//}
-//
-//compileOnly(Java.dependsOn gradle.includedBuild('dex2jar').task(':dex-translator:assemble')
-//compileOnly(Java.dependsOn copyJVMPatches
-//copyJVMPatches.dependsOn fatJarTask
-//
