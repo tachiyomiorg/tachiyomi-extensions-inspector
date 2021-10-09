@@ -6,20 +6,8 @@ on:
       - master
 
 jobs:
-  check_wrapper:
-    name: Validate Gradle Wrapper
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Clone repo
-        uses: actions/checkout@v2
-
-      - name: Validate Gradle Wrapper
-        uses: gradle/wrapper-validation-action@v1
-
   build:
     name: Build project
-    needs: check_wrapper
     runs-on: ubuntu-latest
 
     steps:
@@ -28,8 +16,11 @@ jobs:
         with:
           access_token: ${{ github.token }}
 
-      - name: Checkout master branch
+      - name: Clone repo
         uses: actions/checkout@v2
+
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
 
       - name: Set up JDK
         uses: actions/setup-java@v1
@@ -48,7 +39,7 @@ jobs:
       - name: Build project
         uses: eskatos/gradle-command-action@v1
         with:
-          arguments: :server:shadowJar --stacktrace
-          wrapper-cache-enabled: true
+          arguments: :server:shadowJar
+          distributions-cache-enabled: true
           dependencies-cache-enabled: true
           configuration-cache-enabled: true
