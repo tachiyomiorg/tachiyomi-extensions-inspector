@@ -7,11 +7,11 @@ package suwayomi.tachidesk
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import eu.kanade.tachiyomi.source.online.HttpSource
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
-import suwayomi.tachidesk.manga.impl.extension.Extension
 import suwayomi.tachidesk.manga.impl.extension.Extension.installAPK
 import java.io.File
 
@@ -47,16 +47,14 @@ object InspectorMain {
         val name: String,
         val lang: String,
         val id: String,
-        val baseUrl: String,
-        val nsfw: Boolean
+        val baseUrl: String
     ) {
-        constructor(loadedSource: Extension.LoadedSource) :
+        constructor(source: HttpSource) :
             this(
-                loadedSource.source.name,
-                loadedSource.source.lang,
-                loadedSource.source.id.toString(),
-                loadedSource.source.baseUrl,
-                loadedSource.isNsfw
+                source.name,
+                source.lang,
+                source.id.toString(),
+                source.baseUrl
             )
     }
 }
