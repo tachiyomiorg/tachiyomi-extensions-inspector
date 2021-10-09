@@ -1,6 +1,5 @@
 package eu.kanade.tachiyomi.network
 
-// import kotlinx.coroutines.suspendCancellableCoroutine
 import okhttp3.Call
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -47,38 +46,6 @@ fun Call.asObservable(): Observable<Response> {
     }
 }
 
-// Based on https://github.com/gildor/kotlin-coroutines-okhttp
-// suspend fun Call.await(assertSuccess: Boolean = false): Response {
-//    return suspendCancellableCoroutine { continuation ->
-//        enqueue(
-//            object : Callback {
-//                override fun onResponse(call: Call, response: Response) {
-//                    if (assertSuccess && !response.isSuccessful) {
-//                        continuation.resumeWithException(Exception("HTTP error ${response.code}"))
-//                        return
-//                    }
-//
-//                    continuation.resume(response)
-//                }
-//
-//                override fun onFailure(call: Call, e: IOException) {
-//                    // Don't bother with resuming the continuation if it is already cancelled.
-//                    if (continuation.isCancelled) return
-//                    continuation.resumeWithException(e)
-//                }
-//            }
-//        )
-//
-//        continuation.invokeOnCancellation {
-//            try {
-//                cancel()
-//            } catch (ex: Throwable) {
-//                // Ignore cancel exception
-//            }
-//        }
-//    }
-// }
-
 fun Call.asObservableSuccess(): Observable<Response> {
     return asObservable()
         .doOnNext { response ->
@@ -89,29 +56,8 @@ fun Call.asObservableSuccess(): Observable<Response> {
         }
 }
 
-// fun OkHttpClient.newCallWithProgress(request: Request, listener: ProgressListener): Call {
-//    val progressClient = newBuilder()
-//        .cache(nasObservableSuccessull)
-//        .addNetworkInterceptor { chain ->
-//            val originalResponse = chain.proceed(chain.request())
-//            originalResponse.newBuilder()
-//                .body(ProgressResponseBody(originalResponse.body!!, listener))
-//                .build()
-//        }
-//        .build()
-//
-//    return progressClient.newCall(request)
-// }
-
 fun OkHttpClient.newCallWithProgress(request: Request, listener: ProgressListener): Call {
     val progressClient = newBuilder()
-//        .cache(null)
-//        .addNetworkInterceptor { chain ->
-//            val originalResponse = chain.proceed(chain.request())
-//            originalResponse.newBuilder()
-//                .body(ProgressResponseBody(originalResponse.body!!, listener))
-//                .build()
-//        }
         .build()
 
     return progressClient.newCall(request)

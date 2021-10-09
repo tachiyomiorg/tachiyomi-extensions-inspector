@@ -22,18 +22,9 @@ open class App : Application() {
         super.onCreate()
         Injekt = InjektScope(DefaultRegistrar())
         Injekt.importModule(AppModule(this))
-
-//        if (BuildConfig.DEBUG) Timber.plant(Timber.DebugTree())
     }
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(base)
-//        if (BuildConfig.DEBUG) {
-//            MultiDex.install(this)
-//        }
     }
-
-//    override fun onConfigurationChanged(newConfig: Configuration) {
-//        super.onConfigurationChanged(newConfig)
-//    }
 }

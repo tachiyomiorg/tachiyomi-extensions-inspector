@@ -41,7 +41,3 @@ interface Source {
      */
     fun fetchPageList(chapter: SChapter): Observable<List<Page>>
 }
-
-// fun Source.icon(): Drawable? = Injekt.get<ExtensionManager>().getAppIconForSource(this)
-
-// fun Source.getPreferenceKey(): String = "source_$id"

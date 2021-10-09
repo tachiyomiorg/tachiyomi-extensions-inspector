@@ -33,42 +33,14 @@ class AppModule(val app: Application) : InjektModule {
 
         addSingleton(app)
 
-//        addSingletonFactory { PreferencesHelper(app) }
-//
-//        addSingletonFactory { DatabaseHelper(app) }
-//
-//        addSingletonFactory { ChapterCache(app) }
-//
-//        addSingletonFactory { CoverCache(app) }
-
         addSingletonFactory { NetworkHelper(app) }
-
-//        addSingletonFactory { SourceManager(app).also { get<ExtensionManager>().init(it) } }
-//
-//        addSingletonFactory { ExtensionManager(app) }
-//
-//        addSingletonFactory { DownloadManager(app) }
-//
-//        addSingletonFactory { TrackManager(app) }
-//
-//        addSingletonFactory { LibrarySyncManager(app) }
 
         addSingletonFactory { Gson() }
 
         addSingletonFactory { Json { ignoreUnknownKeys = true } }
 
         // Asynchronously init expensive components for a faster cold start
-
-//        rxAsync { get<PreferencesHelper>() }
-
         rxAsync { get<NetworkHelper>() }
-
-        rxAsync {
-//            get<SourceManager>()
-//            get<DownloadManager>()
-        }
-
-//        rxAsync { get<DatabaseHelper>() }
     }
 
     private fun rxAsync(block: () -> Unit) {
