@@ -43,15 +43,6 @@ object Extension {
             )
         }
 
-        /*val signatureHash = getSignatureHash(packageInfo)
-
-        if (signatureHash == null) {
-            throw Exception("Package $pkgName isn't signed")
-        } else if (signatureHash !in trustedSignatures) {
-            // TODO: allow trusting keys
-            throw Exception("This apk is not a signed with the official tachiyomi signature")
-        }*/
-
         val className = packageInfo.packageName + packageInfo.applicationInfo.metaData.getString(METADATA_SOURCE_CLASS)
 
         logger.trace("Main class for extension is $className")
