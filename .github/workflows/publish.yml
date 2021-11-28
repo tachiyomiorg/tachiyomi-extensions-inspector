@@ -39,12 +39,9 @@ jobs:
           ./AndroidCompat/getAndroid.sh
 
       - name: Build project
-        uses: eskatos/gradle-command-action@v1
+        uses: gradle/gradle-command-action@v2
         with:
           arguments: :server:shadowJar
-          distributions-cache-enabled: true
-          dependencies-cache-enabled: true
-          configuration-cache-enabled: true
 
       - name: Upload Release
         uses: xresloader/upload-to-github-release@v1
