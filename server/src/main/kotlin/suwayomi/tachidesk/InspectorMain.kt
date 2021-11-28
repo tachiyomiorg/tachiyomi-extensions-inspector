@@ -14,8 +14,13 @@ import kotlinx.serialization.json.Json
 import mu.KotlinLogging
 import suwayomi.tachidesk.manga.impl.extension.Extension.installAPK
 import java.io.File
+import java.nio.file.Files
+import java.nio.file.Paths
+import kotlin.io.path.extension
+import kotlin.streams.toList
 
 object InspectorMain {
+
     private val logger = KotlinLogging.logger {}
 
     suspend fun inspectorMain(args: Array<String>) {
@@ -28,16 +33,15 @@ object InspectorMain {
         val tmpDirPath = args[2]
 
         val tmpDir = File(tmpDirPath, "tmp").also { it.mkdir() }
-        val extensions = File(apksPath).listFiles().orEmpty().mapNotNull {
-            if (it.extension == "apk") {
-                logger.info("Installing ${it.absolutePath}")
-
-                val (pkgName, sources) = installAPK(tmpDir) {
-                    it
-                }
+        val extensions = Files.find(Paths.get(apksPath), 2, { _, fileAttributes -> fileAttributes.isRegularFile })
+            .filter { it.extension == "apk" }
+            .toList()
+            .map {
+                logger.info("Installing $it")
+                val (pkgName, sources) = installAPK(tmpDir) { it.toFile() }
                 pkgName to sources.map { source -> SourceJson(source) }
-            } else null
-        }.toMap()
+            }
+            .toMap()
 
         File(outputPath).writeText(Json.encodeToString(extensions))
     }

@@ -59,7 +59,7 @@ sourceSets {
 }
 
 // should be bumped with each stable release
-val inspectorVersion = "v0.5.1"
+val inspectorVersion = "v0.6.0"
 
 // counts commit count on master
 val inspectorRevision = runCatching {
@@ -108,7 +108,8 @@ tasks {
             freeCompilerArgs = listOf(
                     "-Xopt-in=kotlin.RequiresOptIn",
                     "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "-Xopt-in=kotlinx.coroutines.InternalCoroutinesApi"
+                    "-Xopt-in=kotlinx.coroutines.InternalCoroutinesApi",
+                    "-Xopt-in=kotlin.io.path.ExperimentalPathApi",
             )
         }
     }
