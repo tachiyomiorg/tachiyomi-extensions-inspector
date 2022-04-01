@@ -8,15 +8,6 @@ package eu.kanade.tachiyomi
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import android.app.Application
-import com.google.gson.Gson
-// import eu.kanade.tachiyomi.data.cache.ChapterCache
-// import eu.kanade.tachiyomi.data.cache.CoverCache
-// import eu.kanade.tachiyomi.data.database.DatabaseHelper
-// import eu.kanade.tachiyomi.data.download.DownloadManager
-// import eu.kanade.tachiyomi.data.preference.PreferencesHelper
-// import eu.kanade.tachiyomi.data.sync.LibrarySyncManager
-// import eu.kanade.tachiyomi.data.track.TrackManager
-// import eu.kanade.tachiyomi.extension.ExtensionManager
 import eu.kanade.tachiyomi.network.NetworkHelper
 import kotlinx.serialization.json.Json
 import rx.Observable
@@ -34,8 +25,6 @@ class AppModule(val app: Application) : InjektModule {
         addSingleton(app)
 
         addSingletonFactory { NetworkHelper(app) }
-
-        addSingletonFactory { Gson() }
 
         addSingletonFactory { Json { ignoreUnknownKeys = true } }
 

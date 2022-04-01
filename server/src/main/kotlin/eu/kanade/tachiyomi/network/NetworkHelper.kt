@@ -8,6 +8,7 @@ package eu.kanade.tachiyomi.network
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import android.content.Context
+import eu.kanade.tachiyomi.network.interceptor.CloudflareInterceptor
 // import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 // import okhttp3.dnsoverhttps.DnsOverHttps
