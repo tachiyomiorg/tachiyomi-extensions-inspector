@@ -6,28 +6,27 @@ import java.io.BufferedReader
 
 plugins {
     application
+    kotlin("jvm")
     kotlin("plugin.serialization")
-    id("com.github.johnrengelman.shadow") version "7.0.0"
-    id("org.jmailen.kotlinter") version "3.4.3"
-    id("de.fuerstenau.buildconfig") version "1.1.8"
+    id("org.jmailen.kotlinter")
+    id("com.github.johnrengelman.shadow")
+    id("com.github.gmazzo.buildconfig")
 }
 
 dependencies {
     // okhttp
-    val okhttpVersion = "4.9.1" // version is locked by Tachiyomi extensions
+    val okhttpVersion = "4.9.3" // version is locked by Tachiyomi extensions
     implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("com.squareup.okhttp3:logging-interceptor:$okhttpVersion")
     implementation("com.squareup.okhttp3:okhttp-dnsoverhttps:$okhttpVersion")
-    implementation("com.squareup.okio:okio:2.10.0")
+    implementation("com.squareup.okio:okio:3.0.0")
 
 
     // dependencies of Tachiyomi extensions, some are duplicate, keeping it here for reference
     implementation("com.github.inorichi.injekt:injekt-core:65b0440")
-    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.squareup.okhttp3:okhttp:$okhttpVersion")
     implementation("io.reactivex:rxjava:1.3.8")
-    implementation("org.jsoup:jsoup:1.13.1")
-    implementation("com.google.code.gson:gson:2.8.6")
-    implementation("com.github.salomonbrys.kotson:kotson:2.5.0")
+    implementation("org.jsoup:jsoup:1.14.3")
 
 
     // Source models and interfaces from Tachiyomi 1.x
@@ -76,13 +75,17 @@ val inspectorRevision = runCatching {
         }
 }.getOrDefault("r0")
 
-buildConfig {
-    clsName = "BuildConfig"
-    packageName = "suwayomi.server"
+val String.wrapped get() = """"$this""""
 
-    buildConfigField("String", "NAME", rootProject.name)
-    buildConfigField("String", "VERSION", inspectorVersion)
-    buildConfigField("String", "REVISION", inspectorRevision)
+buildConfig {
+    className("BuildConfig")
+    packageName("suwayomi.server")
+
+    useKotlinOutput()
+
+    buildConfigField("String", "NAME", rootProject.name.wrapped)
+    buildConfigField("String", "VERSION", inspectorVersion.wrapped)
+    buildConfigField("String", "REVISION", inspectorRevision.wrapped)
 }
 
 tasks {

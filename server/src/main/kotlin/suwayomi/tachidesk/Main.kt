@@ -19,7 +19,7 @@ import java.io.File
 import java.nio.file.Files
 import java.nio.file.Paths
 import kotlin.io.path.extension
-import kotlin.streams.toList
+import kotlin.streams.asSequence
 
 private val logger = KotlinLogging.logger {}
 
@@ -34,18 +34,17 @@ suspend fun main(args: Array<String>) {
 
     val tmpDir = File(tmpDirPath, "tmp").also { it.mkdir() }
     val extensions = Files.find(Paths.get(apksPath), 2, { _, fileAttributes -> fileAttributes.isRegularFile })
+        .asSequence()
         .filter { it.extension == "apk" }
         .toList()
 
     logger.info("Found ${extensions.size} extensions")
 
-    val extensionsInfo = extensions
-        .map {
-            logger.debug("Installing $it")
-            val (pkgName, sources) = Extension.installAPK(tmpDir) { it.toFile() }
-            pkgName to sources.map { source -> SourceJson(source) }
-        }
-        .toMap()
+    val extensionsInfo = extensions.associate {
+        logger.debug("Installing $it")
+        val (pkgName, sources) = Extension.installAPK(tmpDir) { it.toFile() }
+        pkgName to sources.map { source -> SourceJson(source) }
+    }
 
     File(outputPath).writeText(Json.encodeToString(extensionsInfo))
 }
