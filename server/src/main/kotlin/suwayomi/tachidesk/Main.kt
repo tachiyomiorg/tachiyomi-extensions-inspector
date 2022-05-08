@@ -8,6 +8,7 @@ package suwayomi.tachidesk
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+import eu.kanade.tachiyomi.network.interceptor.CloudflareInterceptor
 import eu.kanade.tachiyomi.source.online.HttpSource
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -54,13 +55,21 @@ data class SourceJson(
     val name: String,
     val lang: String,
     val id: String,
-    val baseUrl: String
+    val baseUrl: String,
+    val versionId: Int,
+    val hasCloudflare: Short
 ) {
     constructor(source: HttpSource) :
         this(
             source.name,
             source.lang,
             source.id.toString(),
-            source.baseUrl
+            source.baseUrl,
+            source.versionId,
+            source.client.interceptors
+                .any { it is CloudflareInterceptor }
+                .toShort()
         )
 }
+
+private fun Boolean.toShort(): Short = if (this) 1 else 0
