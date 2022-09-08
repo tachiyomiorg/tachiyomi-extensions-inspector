@@ -14,7 +14,6 @@ class StubbedCookieManager : CookieManager() {
     }
 
     override fun setAcceptThirdPartyCookies(webview: WebView?, accept: Boolean) {
-        throw NotImplementedError()
     }
 
     override fun acceptThirdPartyCookies(webview: WebView?): Boolean {
@@ -22,11 +21,9 @@ class StubbedCookieManager : CookieManager() {
     }
 
     override fun setCookie(url: String, value: String) {
-        throw NotImplementedError()
     }
 
     override fun setCookie(url: String?, value: String?, callback: ValueCallback<Boolean>?) {
-        throw NotImplementedError()
     }
 
     override fun getCookie(url: String?): String {
@@ -38,19 +35,15 @@ class StubbedCookieManager : CookieManager() {
     }
 
     override fun removeSessionCookie() {
-        throw NotImplementedError()
     }
 
     override fun removeSessionCookies(callback: ValueCallback<Boolean>?) {
-        throw NotImplementedError()
     }
 
     override fun removeAllCookie() {
-        throw NotImplementedError()
     }
 
     override fun removeAllCookies(callback: ValueCallback<Boolean>?) {
-        throw NotImplementedError()
     }
 
     override fun hasCookies(): Boolean {
@@ -62,11 +55,9 @@ class StubbedCookieManager : CookieManager() {
     }
 
     override fun removeExpiredCookie() {
-        throw NotImplementedError()
     }
 
     override fun flush() {
-        throw NotImplementedError()
     }
 
     override fun allowFileSchemeCookiesImpl(): Boolean {
@@ -74,6 +65,5 @@ class StubbedCookieManager : CookieManager() {
     }
 
     override fun setAcceptFileSchemeCookiesImpl(accept: Boolean) {
-        throw NotImplementedError()
     }
 }
