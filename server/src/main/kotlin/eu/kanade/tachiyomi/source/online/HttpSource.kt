@@ -54,7 +54,7 @@ abstract class HttpSource : CatalogueSource {
      * Note the generated id sets the sign bit to 0.
      */
     override val id by lazy {
-        val key = "${name.toLowerCase()}/$lang/$versionId"
+        val key = "${name.lowercase()}/$lang/$versionId"
         val bytes = MessageDigest.getInstance("MD5").digest(key.toByteArray())
         (0..7).map { bytes[it].toLong() and 0xff shl 8 * (7 - it) }.reduce(Long::or) and Long.MAX_VALUE
     }
@@ -80,7 +80,7 @@ abstract class HttpSource : CatalogueSource {
     /**
      * Visible name of the source.
      */
-    override fun toString() = "$name (${lang.toUpperCase()})"
+    override fun toString() = "$name (${lang.uppercase()})"
 
     /**
      * Returns an observable containing a page with a list of manga. Normally it's not needed to
@@ -356,14 +356,35 @@ abstract class HttpSource : CatalogueSource {
     }
 
     /**
+     * Returns the url of the provided manga
+     *
+     * @since extensions-lib 1.4
+     * @param manga the manga
+     * @return url of the manga
+     */
+    open fun getMangaUrl(manga: SManga): String {
+        return mangaDetailsRequest(manga).url.toString()
+    }
+
+    /**
+     * Returns the url of the provided chapter
+     *
+     * @since extensions-lib 1.4
+     * @param chapter the chapter
+     * @return url of the chapter
+     */
+    open fun getChapterUrl(chapter: SChapter): String {
+        return pageListRequest(chapter).url.toString()
+    }
+
+    /**
      * Called before inserting a new chapter into database. Use it if you need to override chapter
      * fields, like the title or the chapter number. Do not change anything to [manga].
      *
      * @param chapter the chapter to be added.
      * @param manga the manga of the chapter.
      */
-    open fun prepareNewChapter(chapter: SChapter, manga: SManga) {
-    }
+    open fun prepareNewChapter(chapter: SChapter, manga: SManga) {}
 
     /**
      * Returns the list of filters for the source.

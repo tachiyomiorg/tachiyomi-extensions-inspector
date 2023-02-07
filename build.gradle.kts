@@ -1,12 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "1.6.10"
-    kotlin("plugin.serialization") version "1.6.10" apply false
+    kotlin("jvm") version "1.8.0"
+    kotlin("plugin.serialization") version "1.8.0" apply false
     id("org.jmailen.kotlinter") version "3.9.0" apply false
     id("com.github.gmazzo.buildconfig") version "3.0.3" apply false
     id("com.github.johnrengelman.shadow") version "7.1.2" apply false
-    id("com.github.ben-manes.versions") version "0.39.0"
 }
 
 allprojects {
@@ -51,12 +50,12 @@ configure(projects) {
         testImplementation(kotlin("test"))
 
         // coroutines
-        val coroutinesVersion = "1.6.0"
+        val coroutinesVersion = "1.6.4"
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-jdk8:$coroutinesVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
 
-        val kotlinSerializationVersion = "1.3.2"
+        val kotlinSerializationVersion = "1.4.0"
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$kotlinSerializationVersion")
 
@@ -75,7 +74,7 @@ configure(projects) {
         implementation("com.jakewharton.rxrelay:rxrelay:1.2.0")
 
         // JSoup
-        implementation("org.jsoup:jsoup:1.14.3")
+        implementation("org.jsoup:jsoup:1.15.3")
 
         // dependency of :AndroidCompat:Config
         implementation("com.typesafe:config:1.4.2")
