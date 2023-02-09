@@ -59,7 +59,7 @@ sourceSets {
 }
 
 // should be bumped with each stable release
-val inspectorVersion = "v0.7.2"
+val inspectorVersion = "v1.4.0"
 
 // counts commit count on master
 val inspectorRevision = runCatching {
