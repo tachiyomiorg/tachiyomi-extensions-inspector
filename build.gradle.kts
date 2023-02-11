@@ -81,7 +81,7 @@ configure(projects) {
         implementation("io.github.config4k:config4k:0.4.2")
 
         // dex2jar
-        val dex2jarVersion = "v35"
+        val dex2jarVersion = "v59"
         implementation("com.github.ThexXTURBOXx.dex2jar:dex-translator:$dex2jarVersion")
         implementation("com.github.ThexXTURBOXx.dex2jar:dex-tools:$dex2jarVersion")
 
