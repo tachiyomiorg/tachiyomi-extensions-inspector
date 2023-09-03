@@ -33,13 +33,13 @@ configure(projects) {
     apply(plugin = "org.jetbrains.kotlin.jvm")
 
     java {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     tasks.withType<KotlinCompile> {
         kotlinOptions {
-            jvmTarget = JavaVersion.VERSION_11.toString()
+            jvmTarget = JavaVersion.VERSION_17.toString()
         }
     }
 
@@ -59,7 +59,6 @@ configure(projects) {
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinSerializationVersion")
         implementation("org.jetbrains.kotlinx:kotlinx-serialization-protobuf:$kotlinSerializationVersion")
 
-
         // Dependency Injection
         implementation("org.kodein.di:kodein-di-conf-jvm:7.11.0")
 
@@ -71,7 +70,6 @@ configure(projects) {
         // ReactiveX
         implementation("io.reactivex:rxjava:1.3.8")
         implementation("io.reactivex:rxkotlin:1.0.0")
-        implementation("com.jakewharton.rxrelay:rxrelay:1.2.0")
 
         // JSoup
         implementation("org.jsoup:jsoup:1.15.3")
@@ -81,7 +79,7 @@ configure(projects) {
         implementation("io.github.config4k:config4k:0.4.2")
 
         // dex2jar
-        val dex2jarVersion = "v59"
+        val dex2jarVersion = "v71"
         implementation("com.github.ThexXTURBOXx.dex2jar:dex-translator:$dex2jarVersion")
         implementation("com.github.ThexXTURBOXx.dex2jar:dex-tools:$dex2jarVersion")
 

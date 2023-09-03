@@ -29,11 +29,6 @@ dependencies {
     implementation("org.jsoup:jsoup:1.15.3")
     implementation("app.cash.quickjs:quickjs-jvm:0.9.2")
 
-
-    // Source models and interfaces from Tachiyomi 1.x
-    // using source class from tachiyomi commit 9493577de27c40ce8b2b6122cc447d025e34c477 to not depend on tachiyomi.sourceapi
-//    implementation("tachiyomi.sourceapi:source-api:1.1")
-
     // AndroidCompat
     implementation(project(":AndroidCompat"))
     implementation(project(":AndroidCompat:Config"))
@@ -59,7 +54,7 @@ sourceSets {
 }
 
 // should be bumped with each stable release
-val inspectorVersion = "v1.4.2"
+val inspectorVersion = "v1.4.3"
 
 // counts commit count on master
 val inspectorRevision = runCatching {
@@ -110,10 +105,10 @@ tasks {
     withType<KotlinCompile> {
         kotlinOptions {
             freeCompilerArgs = listOf(
-                    "-Xopt-in=kotlin.RequiresOptIn",
-                    "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
-                    "-Xopt-in=kotlinx.coroutines.InternalCoroutinesApi",
-                    "-Xopt-in=kotlin.io.path.ExperimentalPathApi",
+                "-Xopt-in=kotlin.RequiresOptIn",
+                "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+                "-Xopt-in=kotlinx.coroutines.InternalCoroutinesApi",
+                "-Xopt-in=kotlin.io.path.ExperimentalPathApi",
             )
         }
     }
