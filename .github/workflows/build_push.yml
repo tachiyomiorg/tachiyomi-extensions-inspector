@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Clone repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
@@ -34,4 +34,4 @@ jobs:
       - name: Build project
         uses: gradle/gradle-command-action@v2
         with:
-          arguments: :server:shadowJar
+          arguments: :inspector:shadowJar

@@ -9,8 +9,7 @@ plugins {
 }
 
 allprojects {
-    group = "suwayomi"
-
+    group = "tachiyomi"
     version = "1.0"
 
     repositories {
@@ -24,9 +23,9 @@ allprojects {
 }
 
 val projects = listOf(
-        project(":AndroidCompat"),
-        project(":AndroidCompat:Config"),
-        project(":server")
+    project(":AndroidCompat"),
+    project(":AndroidCompat:Config"),
+    project(":inspector")
 )
 
 configure(projects) {
@@ -47,7 +46,6 @@ configure(projects) {
         // Kotlin
         implementation(kotlin("stdlib-jdk8"))
         implementation(kotlin("reflect"))
-        testImplementation(kotlin("test"))
 
         // coroutines
         val coroutinesVersion = "1.6.4"

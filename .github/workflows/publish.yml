@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout ${{ github.ref }}
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.ref }}
 
@@ -36,7 +36,7 @@ jobs:
       - name: Build project
         uses: gradle/gradle-command-action@v2
         with:
-          arguments: :server:shadowJar
+          arguments: :inspector:shadowJar
 
       - name: Upload Release
         uses: xresloader/upload-to-github-release@v1
